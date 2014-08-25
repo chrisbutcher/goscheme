@@ -1,3 +1,6 @@
+# goscheme
+An experimental Scheme interpreter and REPL in Go.
+
 ## Running
 ```bash
 cd goscheme
@@ -8,7 +11,7 @@ goscheme sample.scm # to run a Scheme script
 
 ## Examples
 ```clojurescript
-(+ 3 4)
+> (+ 3 4)
  => 7
 > (define timestwo (lambda (x) (* x 2)))
  => lambda
