@@ -69,7 +69,7 @@ func createAtom(val T) Atom {
 	}
 }
 
-func genericListToAtomSlice(input T) []Atom {
+func genericToAtomSlice(input T) []Atom {
 	result := make([]Atom, 0)
 
 	switch input.(type) {
@@ -79,7 +79,7 @@ func genericListToAtomSlice(input T) []Atom {
 		for _, item := range slice {
 			result = append(result, item.(Atom))
 		}
-	case T:
+	case Atom:
 		result = append(result, input.(Atom))
 	}
 
@@ -87,7 +87,7 @@ func genericListToAtomSlice(input T) []Atom {
 }
 
 func populateLambda(input Sexpr) Atom {
-	return Atom{typ: atomLambda, val: "lambda", valLambdaArgs: genericListToAtomSlice(input[1]), valLambdaFn: genericListToAtomSlice(input[2])}
+	return Atom{typ: atomLambda, val: "lambda", valLambdaArgs: genericToAtomSlice(input[1]), valLambdaFn: genericToAtomSlice(input[2])}
 }
 
 func exprIsLambda(input T) bool {
