@@ -67,7 +67,7 @@ func TestCarCdr(t *testing.T) {
 	}
 }
 
-func AnonymousLambdas(t *testing.T) {
+func TestAnonymousLambdas(t *testing.T) {
 	in := "((lambda (x) (+ x 5)) ((lambda (y) (+ y 1)) 1))"
 	ast, _ := Parenthesize(Tokenize(in))
 	env := SetupEnvironment()
@@ -79,7 +79,7 @@ func AnonymousLambdas(t *testing.T) {
 	}
 }
 
-func FindVariableInParentEnvironment(t *testing.T) {
+func TestFindVariableInParentEnvironment(t *testing.T) {
 	in := "(define y 41)"
 	ast, _ := Parenthesize(Tokenize(in))
 	env := SetupEnvironment()
@@ -92,11 +92,34 @@ func FindVariableInParentEnvironment(t *testing.T) {
 
 	in = "((lambda (x) (+ x y)) 1)"
 	ast, _ = Parenthesize(Tokenize(in))
-	env = SetupEnvironment()
 	actual = Eval(ast, env)
 	expected = 42.0
 
-	if actual.(Atom).val != expected {
+	if actual.(Atom).valNum != expected {
+		t.Error("Expected ", expected, " got ", actual)
+	}
+}
+
+func TestCondGreater(t *testing.T) {
+	in := "(> 2 1)"
+	ast, _ := Parenthesize(Tokenize(in))
+	env := SetupEnvironment()
+	actual := Eval(ast, env)
+	expected := true
+
+	if actual.(Atom).BooleanValue() != expected {
+		t.Error("Expected ", expected, " got ", actual)
+	}
+}
+
+func TestCondLessThan(t *testing.T) {
+	in := "(< 2 1)"
+	ast, _ := Parenthesize(Tokenize(in))
+	env := SetupEnvironment()
+	actual := Eval(ast, env)
+	expected := false
+
+	if actual.(Atom).BooleanValue() != expected {
 		t.Error("Expected ", expected, " got ", actual)
 	}
 }

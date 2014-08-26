@@ -19,6 +19,29 @@ func initializeBuiltins() {
 	builtins["quote"] = Quote
 	builtins["car"] = Car
 	builtins["cdr"] = Cdr
+	builtins["if"] = CondIf
+	builtins[">"] = CondGreater
+	builtins["<"] = CondLessThan
+}
+
+func CondIf(input []Atom, env Environment) Atom {
+	fmt.Println("Conditional!")
+
+	if input[0].typ == atomBoolean && input[0].val.(bool) == true {
+		return input[1]
+	} else {
+		return input[2]
+	}
+}
+
+func CondGreater(input []Atom, env Environment) Atom {
+	boolean := input[0].valNum > input[1].valNum
+	return Atom{typ: atomBoolean, val: boolean}
+}
+
+func CondLessThan(input []Atom, env Environment) Atom {
+	boolean := input[0].valNum < input[1].valNum
+	return Atom{typ: atomBoolean, val: boolean}
 }
 
 func Quote(input []Atom, env Environment) Atom {

@@ -56,9 +56,12 @@ func Eval(x Sexpr, env Environment) T {
 			} else {
 				fn := builtins[fnAtom.val.(string)]
 
-				result := fn(a, env)
-
-				return result
+				if fn != nil {
+					result := fn(a, env)
+					return result
+				} else {
+					return fnAtom // Need to return error atom instead
+				}
 			}
 		}
 	}

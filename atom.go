@@ -13,6 +13,7 @@ const (
 	atomFloat
 	atomQuote
 	atomLambda
+	atomBoolean
 )
 
 type Atom struct {
@@ -35,6 +36,10 @@ func (a Atom) String() string {
 	} else {
 		return fmt.Sprintf("<%s:%s>", atomTypeToString(a.typ), a.val)
 	}
+}
+
+func (a Atom) BooleanValue() bool {
+	return a.val.(bool)
 }
 
 func floatToString(f float64) string {
@@ -75,7 +80,6 @@ func genericToAtomSlice(input T) []Atom {
 	switch input.(type) {
 	case Sexpr:
 		slice := input.(Sexpr)
-
 		for _, item := range slice {
 			result = append(result, item.(Atom))
 		}
@@ -87,10 +91,35 @@ func genericToAtomSlice(input T) []Atom {
 }
 
 func populateLambda(input Sexpr) Atom {
+	fmt.Println("!!!")
+	fmt.Println(input[2])
+	fmt.Println(genericToAtomSlice(input[2]))
+
 	return Atom{typ: atomLambda, val: "lambda", valLambdaArgs: genericToAtomSlice(input[1]), valLambdaFn: genericToAtomSlice(input[2])}
 }
 
+func exprIsConditional(input T) bool {
+	switch input.(type) {
+	case Atom:
+		input_atom := input.(Atom)
+		if input_atom.typ == atomBuiltin {
+			if input_atom.val == "if" {
+				return true
+			} else {
+				return false
+			}
+		}
+	default:
+		return false
+	}
+
+	return false
+}
+
 func exprIsLambda(input T) bool {
+	fmt.Println("exprIsLambda")
+	fmt.Println(input)
+
 	switch input.(type) {
 	case Atom:
 		return input.(Atom).typ == atomLambda
