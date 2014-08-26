@@ -30,4 +30,9 @@ goscheme sample.scm # to run a Scheme script
 > ((lambda (x) (+ x y)) 1)
  => 42
 
+> (define lessthanten (lambda (x) (if (< x 10) true false)))
+ => lambda
+> (lessthanten 9)
+ => true
+
 ```

@@ -32,6 +32,8 @@ func Eval(x Sexpr, env Environment) T {
 		if exprIsLambda(x[0]) {
 			x[0] = populateLambda(x)
 			return x[0]
+		} else if exprIsBoolean(x[0]) {
+			return x[0].(Atom).val
 		} else {
 			for index, _ := range x {
 				evaled_expressions = append(evaled_expressions, Eval(x[index:index+1], env))
@@ -48,11 +50,11 @@ func Eval(x Sexpr, env Environment) T {
 			if fnAtom.typ == atomLambda {
 				lambdaFn := make(Sexpr, 0)
 
-				for _, lambdaAtom := range fnAtom.valLambdaFn {
+				for _, lambdaAtom := range fnAtom.lambdaFn {
 					lambdaFn = append(lambdaFn, lambdaAtom)
 				}
 
-				return Eval(lambdaFn, New(fnAtom.valLambdaArgs, a, env))
+				return Eval(lambdaFn, New(fnAtom.lambdaArgs, a, env))
 			} else {
 				fn := builtins[fnAtom.val.(string)]
 

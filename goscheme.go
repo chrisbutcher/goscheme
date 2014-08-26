@@ -16,11 +16,17 @@ func interpretInput(input string, env Environment) {
 	parseTree, _ := Parenthesize(tokens)
 	result := Eval(parseTree, env).(Atom)
 
+	fmt.Print(" => ")
+
 	switch result.typ {
 	case atomFloat:
-		fmt.Printf(" => %v\n", result.valNum)
+		fmt.Printf("%f\n", result.valNum)
+	case atomQuote:
+		fmt.Printf("%v\n", result.val)
+	case atomBoolean:
+		fmt.Printf("%v\n", result.val)
 	default:
-		fmt.Printf(" => %v\n", result.val)
+		fmt.Printf("%v\n", result.val)
 	}
 }
 

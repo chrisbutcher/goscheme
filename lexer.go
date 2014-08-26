@@ -7,7 +7,6 @@ func Parenthesize(tokens Sexpr) (Sexpr, Sexpr) {
 	var t T = tokens[0] // The current token
 
 	if t.(string) == "(" {
-
 		ast := make(Sexpr, 0) // Abstract syntax tree, nested strings and slices
 		for {
 			tokens = tokens[1:]

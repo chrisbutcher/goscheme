@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 var builtins map[string]func([]Atom, Environment) Atom
 
 func isBuiltIn(s string) bool {
@@ -25,8 +23,6 @@ func initializeBuiltins() {
 }
 
 func CondIf(input []Atom, env Environment) Atom {
-	fmt.Println("Conditional!")
-
 	if input[0].typ == atomBoolean && input[0].val.(bool) == true {
 		return input[1]
 	} else {
@@ -90,10 +86,5 @@ func Divide(input []Atom, env Environment) Atom {
 
 func Define(input []Atom, env Environment) Atom {
 	env.set(input[0].val.(string), input[1])
-
-	if exprIsLambda(input[1]) {
-		fmt.Println(" => " + input[0].val.(string))
-	}
-
 	return input[1]
 }

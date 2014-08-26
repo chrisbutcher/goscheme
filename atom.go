@@ -17,11 +17,12 @@ const (
 )
 
 type Atom struct {
-	typ           atomEnumType
-	val           T
-	valNum        float64
-	valLambdaArgs []Atom
-	valLambdaFn   []Atom
+	typ        atomEnumType
+	val        T
+	valNum     float64
+	lambdaName string
+	lambdaArgs []Atom
+	lambdaFn   Sexpr
 }
 
 func atomTypeToString(t atomEnumType) string {
@@ -32,7 +33,9 @@ func atomTypeToString(t atomEnumType) string {
 
 func (a Atom) String() string {
 	if a.typ == atomLambda {
-		return fmt.Sprintf("<%s:args(%s):fn(%s)>", atomTypeToString(a.typ), a.valLambdaArgs, a.valLambdaFn)
+		return fmt.Sprintf("<%s:args(%s):fn(%s)>", atomTypeToString(a.typ), a.lambdaArgs, a.lambdaFn)
+	} else if a.typ == atomQuote {
+		return fmt.Sprintf("%v", a.val)
 	} else {
 		return fmt.Sprintf("<%s:%s>", atomTypeToString(a.typ), a.val)
 	}
@@ -62,6 +65,12 @@ func createAtom(val T) Atom {
 				new_atom.typ = atomBuiltin
 			} else if value == "lambda" {
 				new_atom.typ = atomLambda
+			} else if value == "true" {
+				new_atom.typ = atomBoolean
+				new_atom.val = true
+			} else if value == "false" {
+				new_atom.typ = atomBoolean
+				new_atom.val = false
 			} else {
 				new_atom.typ = atomSymbol
 			}
@@ -90,12 +99,24 @@ func genericToAtomSlice(input T) []Atom {
 	return result
 }
 
-func populateLambda(input Sexpr) Atom {
-	fmt.Println("!!!")
-	fmt.Println(input[2])
-	fmt.Println(genericToAtomSlice(input[2]))
+func genericToSexpr(input T) Sexpr {
+	result := make(Sexpr, 0)
 
-	return Atom{typ: atomLambda, val: "lambda", valLambdaArgs: genericToAtomSlice(input[1]), valLambdaFn: genericToAtomSlice(input[2])}
+	switch input.(type) {
+	case Sexpr:
+		slice := input.(Sexpr)
+		for _, item := range slice {
+			result = append(result, item.(Atom))
+		}
+	case Atom:
+		result = append(result, input.(Atom))
+	}
+
+	return result
+}
+
+func populateLambda(input Sexpr) Atom {
+	return Atom{typ: atomLambda, val: "lambda", lambdaArgs: genericToAtomSlice(input[1]), lambdaFn: input[2].(Sexpr)}
 }
 
 func exprIsConditional(input T) bool {
@@ -116,10 +137,16 @@ func exprIsConditional(input T) bool {
 	return false
 }
 
-func exprIsLambda(input T) bool {
-	fmt.Println("exprIsLambda")
-	fmt.Println(input)
+func exprIsBoolean(input T) bool {
+	switch input.(type) {
+	case Atom:
+		return input.(Atom).typ == atomBoolean
+	default:
+		return false
+	}
+}
 
+func exprIsLambda(input T) bool {
 	switch input.(type) {
 	case Atom:
 		return input.(Atom).typ == atomLambda

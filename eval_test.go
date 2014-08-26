@@ -123,3 +123,24 @@ func TestCondLessThan(t *testing.T) {
 		t.Error("Expected ", expected, " got ", actual)
 	}
 }
+
+func TestConditionalInLambda(t *testing.T) {
+	in := "(define lessthanten (lambda (x) (if (< x 10) true false)))"
+	ast, _ := Parenthesize(Tokenize(in))
+	env := SetupEnvironment()
+	actual := Eval(ast, env)
+	expected := atomLambda
+
+	if actual.(Atom).typ != expected {
+		t.Error("Expected ", expected, " got ", actual)
+	}
+
+	in = "(lessthanten 11)"
+	ast, _ = Parenthesize(Tokenize(in))
+	actual = Eval(ast, env)
+	expected_bool := false
+
+	if actual.(Atom).val != expected_bool {
+		t.Error("Expected ", expected_bool, " got ", actual)
+	}
+}
