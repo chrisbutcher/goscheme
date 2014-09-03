@@ -3,11 +3,11 @@ package main
 import "strings"
 
 // Returns nested token array, and mutated (popped from front) tokens for recursion
-func Parenthesize(tokens Sexpr) (Sexpr, Sexpr) {
+func Parenthesize(tokens Expr) (Expr, Expr) {
 	var t T = tokens[0] // The current token
 
 	if t.(string) == "(" {
-		ast := make(Sexpr, 0) // Abstract syntax tree, nested strings and slices
+		ast := make(Expr, 0) // Abstract syntax tree, nested strings and slices
 		for {
 			tokens = tokens[1:]
 			next_token_or_expression, new_tokens := Parenthesize(tokens)
@@ -28,21 +28,21 @@ func Parenthesize(tokens Sexpr) (Sexpr, Sexpr) {
 		return ast, tokens
 
 	} else {
-		// Must return ast as Sexpr, even if it is a single token
-		ast := make(Sexpr, 0)
+		// Must return ast as Expr, even if it is a single token
+		ast := make(Expr, 0)
 		ast = append(ast, t)
 
 		return ast, tokens
 	}
 }
 
-func Tokenize(s string) Sexpr {
+func Tokenize(s string) Expr {
 	s = strings.Replace(s, "(", " ( ", -1)
 	s = strings.Replace(s, ")", " ) ", -1)
 
 	split_tokens := strings.Split(s, " ")
 
-	tokens := make(Sexpr, 0)
+	tokens := make(Expr, 0)
 
 	for _, t := range split_tokens {
 		if t != "" && t != "\n" {

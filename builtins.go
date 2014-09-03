@@ -1,14 +1,9 @@
 package main
 
-var builtins map[string]func([]Atom, Environment) Atom
+type builtinMapType map[string]func([]Atom, Environment) Atom
 
-func isBuiltIn(s string) bool {
-	_, result := builtins[s]
-	return result
-}
-
-func initializeBuiltins() {
-	builtins = make(map[string]func([]Atom, Environment) Atom)
+func BuiltinsList() builtinMapType {
+	builtins := make(builtinMapType)
 	builtins["+"] = Add
 	builtins["-"] = Subtract
 	builtins["*"] = Multiply
@@ -18,8 +13,11 @@ func initializeBuiltins() {
 	builtins["car"] = Car
 	builtins["cdr"] = Cdr
 	builtins["if"] = CondIf
-	builtins[">"] = CondGreater
-	builtins["<"] = CondLessThan
+	builtins[">"] = OpGreaterThan
+	builtins["<"] = OpLessThan
+	builtins["="] = OpEqual
+
+	return builtins
 }
 
 func CondIf(input []Atom, env Environment) Atom {
@@ -30,13 +28,18 @@ func CondIf(input []Atom, env Environment) Atom {
 	}
 }
 
-func CondGreater(input []Atom, env Environment) Atom {
+func OpGreaterThan(input []Atom, env Environment) Atom {
 	boolean := input[0].valNum > input[1].valNum
 	return Atom{typ: atomBoolean, val: boolean}
 }
 
-func CondLessThan(input []Atom, env Environment) Atom {
+func OpLessThan(input []Atom, env Environment) Atom {
 	boolean := input[0].valNum < input[1].valNum
+	return Atom{typ: atomBoolean, val: boolean}
+}
+
+func OpEqual(input []Atom, env Environment) Atom {
+	boolean := input[0].valNum == input[1].valNum
 	return Atom{typ: atomBoolean, val: boolean}
 }
 

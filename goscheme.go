@@ -9,12 +9,11 @@ import (
 )
 
 type T interface{}
-type Sexpr []T
 
 func interpretInput(input string, env Environment) {
 	tokens := Tokenize(input)
 	parseTree, _ := Parenthesize(tokens)
-	result := Eval(parseTree, env).(Atom)
+	result := parseTree.Eval(env).(Atom)
 
 	fmt.Print(" => ")
 
@@ -31,7 +30,6 @@ func interpretInput(input string, env Environment) {
 }
 
 func main() {
-	initializeBuiltins()
 	printBanner()
 	reader := bufio.NewReader(os.Stdin)
 

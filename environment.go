@@ -21,6 +21,10 @@ func (e *Environment) get(key string) (T, bool) {
 
 func (e *Environment) initialize() {
 	e.env = make(map[string]T)
+
+	for builtinName, builtinValue := range BuiltinsList() {
+		e.set(builtinName, Atom{typ: atomBuiltin, lambdaFn: builtinValue, val: builtinName})
+	}
 }
 
 func New(keys, values []Atom, parentEnvironment Environment) Environment {

@@ -3,9 +3,9 @@ package main
 import "testing"
 import "reflect"
 
-func TestTokenizeSimpleSexpr(t *testing.T) {
+func TestTokenizeSimpleExpr(t *testing.T) {
 	const in = "(+ 1 1)"
-	var out = Sexpr{"(", "+", "1", "1", ")"}
+	var out = Expr{"(", "+", "1", "1", ")"}
 	actual := Tokenize(in)
 
 	if !reflect.DeepEqual(out, actual) {
@@ -13,9 +13,9 @@ func TestTokenizeSimpleSexpr(t *testing.T) {
 	}
 }
 
-func TestTokenizeNestedSexpr(t *testing.T) {
+func TestTokenizeNestedExpr(t *testing.T) {
 	const in = "(define timestwo (lambda (x) (* x 2)))"
-	var out = Sexpr{"(", "define", "timestwo", "(", "lambda", "(", "x", ")", "(", "*", "x", "2", ")", ")", ")"}
+	var out = Expr{"(", "define", "timestwo", "(", "lambda", "(", "x", ")", "(", "*", "x", "2", ")", ")", ")"}
 
 	actual := Tokenize(in)
 

@@ -22,7 +22,7 @@ type Atom struct {
 	valNum     float64
 	lambdaName string
 	lambdaArgs []Atom
-	lambdaFn   Sexpr
+	lambdaFn   T
 }
 
 func atomTypeToString(t atomEnumType) string {
@@ -61,9 +61,7 @@ func createAtom(val T) Atom {
 
 		new_atom.val = value
 		if err != nil {
-			if isBuiltIn(value) {
-				new_atom.typ = atomBuiltin
-			} else if value == "lambda" {
+			if value == "lambda" {
 				new_atom.typ = atomLambda
 			} else if value == "true" {
 				new_atom.typ = atomBoolean
@@ -87,8 +85,8 @@ func genericToAtomSlice(input T) []Atom {
 	result := make([]Atom, 0)
 
 	switch input.(type) {
-	case Sexpr:
-		slice := input.(Sexpr)
+	case Expr:
+		slice := input.(Expr)
 		for _, item := range slice {
 			result = append(result, item.(Atom))
 		}
@@ -99,12 +97,12 @@ func genericToAtomSlice(input T) []Atom {
 	return result
 }
 
-func genericToSexpr(input T) Sexpr {
-	result := make(Sexpr, 0)
+func genericToExpr(input T) Expr {
+	result := make(Expr, 0)
 
 	switch input.(type) {
-	case Sexpr:
-		slice := input.(Sexpr)
+	case Expr:
+		slice := input.(Expr)
 		for _, item := range slice {
 			result = append(result, item.(Atom))
 		}
@@ -115,8 +113,8 @@ func genericToSexpr(input T) Sexpr {
 	return result
 }
 
-func populateLambda(input Sexpr) Atom {
-	return Atom{typ: atomLambda, val: "lambda", lambdaArgs: genericToAtomSlice(input[1]), lambdaFn: input[2].(Sexpr)}
+func populateLambda(input Expr) Atom {
+	return Atom{typ: atomLambda, val: "lambda", lambdaArgs: genericToAtomSlice(input[1]), lambdaFn: input[2].(Expr)}
 }
 
 func exprIsConditional(input T) bool {
