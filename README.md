@@ -1,6 +1,9 @@
 # goscheme
 An experimental Scheme interpreter and REPL in Go.
 
+## Latest
+See the development branch for a cleaner re-design that is underway.
+
 ## Running
 ```bash
 cd goscheme
