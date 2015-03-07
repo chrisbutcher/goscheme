@@ -1,1 +1,1 @@
-((lambda (x) (+ x 5)) ((lambda (y) (+ y 1)) 1))
+(begin (define x 5) (+ x 1)) 

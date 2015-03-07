@@ -1,6 +1,9 @@
 # goscheme
 An experimental Scheme interpreter and REPL in Go.
 
+## Latest
+See the [experimental](https://github.com/chrisbutcher/goscheme/tree/experimental) branch for a cleaner re-design that is underway.
+
 ## Running
 ```bash
 cd goscheme
@@ -15,7 +18,7 @@ goscheme sample.scm # to run a Scheme script
  => 7
 
 > (define timestwo (lambda (x) (* x 2)))
- => lambda
+ => timestwo
 > (timestwo 50)
  => 100
 
@@ -31,7 +34,7 @@ goscheme sample.scm # to run a Scheme script
  => 42
 
 > (define lessthanten (lambda (x) (if (< x 10) true false)))
- => lambda
+ => lessthanten
 > (lessthanten 9)
  => true
 
