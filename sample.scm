@@ -1,1 +1,7 @@
-(begin (define lessthanten (lambda (x) (if (< x 10) #t #f))) (lessthanten 9))
+(((lambda (x) (x x))
+  (lambda (fact-gen)
+    (lambda (n)
+      (if (= 1 n) 1 (* n ((fact-gen fact-gen) (- n 1))))
+    )
+  )
+) 100)
