@@ -39,7 +39,9 @@ goscheme sample.scm # to run a Scheme script
   ) 100)
  => 9.33262154439441e+157
 
-> (begin (define lessthanten (lambda (x) (if (< x 10) #t #f))) (lessthanten 9))
+> (begin
+    (define lessthanten (lambda (x) (if (< x 10) #t #f)))
+    (lessthanten 9))
  => #t
 
 ```
