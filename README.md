@@ -18,9 +18,9 @@ goscheme sample.scm # to run a Scheme script
  => 3
 
 > (begin 
-  (define square (lambda (x) (* x x)))
-  (define sum-of-squares (lambda (a b) (+ (square a) (square b))))
-  (sum-of-squares 3 4))
+    (define square (lambda (x) (* x x)))
+    (define sum-of-squares (lambda (a b) (+ (square a) (square b))))
+    (sum-of-squares 3 4))
  => 25
 
 > (define y 12)
