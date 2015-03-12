@@ -10,7 +10,7 @@ goscheme sample.scm # to run a Scheme script
 ```
 
 ## Examples
-```clojurescript
+```scheme
 > (+ 3 4)
  => 7
 
