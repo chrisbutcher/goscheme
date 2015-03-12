@@ -23,7 +23,7 @@ func ReadEval(input string, en types.Environment) types.Expression {
     fmt.Println("Lexing error: ", err)
   }
 
-  parsed, err := parser.Parse(&tokens)
+  parsed, _, err := parser.Parse(tokens)
   if err != nil {
     fmt.Println("Parsing error: ", err)
   }
